@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,12 +10,31 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
     :root {
+      /* Dark theme (default) */
       --bg-primary: #0a0a0f;
       --bg-secondary: #1a1a2e;
       --text-primary: #ffffff;
       --text-secondary: #9ca3af;
       --accent-blue: #3b82f6;
       --accent-cyan: #06b6d4;
+      --border-color: rgba(255,255,255,0.1);
+      --card-bg: rgba(255,255,255,0.02);
+      --formula-bg: rgba(59, 130, 246, 0.05);
+      --formula-border: rgba(59, 130, 246, 0.2);
+    }
+
+    [data-theme="light"] {
+      /* Light theme */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --accent-blue: #2563eb;
+      --accent-cyan: #0891b2;
+      --border-color: rgba(0,0,0,0.1);
+      --card-bg: rgba(0,0,0,0.02);
+      --formula-bg: rgba(37, 99, 235, 0.05);
+      --formula-border: rgba(37, 99, 235, 0.2);
     }
 
     body {
@@ -25,6 +43,7 @@
       color: var(--text-primary);
       margin: 0;
       line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     .mono {
@@ -37,11 +56,44 @@
       padding: 2rem;
     }
 
+    .theme-toggle {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      z-index: 1000;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    .theme-toggle-icon {
+      width: 20px;
+      height: 20px;
+      transition: all 0.3s ease;
+      color: var(--text-secondary);
+    }
+
+    .theme-toggle-icon.active {
+      color: var(--accent-blue);
+    }
+
     .header {
       text-align: center;
       margin-bottom: 4rem;
       padding: 3rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .fund-title {
@@ -75,14 +127,15 @@
     }
 
     .math-formula {
-      background: rgba(59, 130, 246, 0.05);
-      border: 1px solid rgba(59, 130, 246, 0.2);
+      background: var(--formula-bg);
+      border: 1px solid var(--formula-border);
       border-radius: 8px;
       padding: 1.5rem;
       margin: 1.5rem 0;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.9rem;
       overflow-x: auto;
+      transition: all 0.3s ease;
     }
 
     .metric-grid {
@@ -93,8 +146,8 @@
     }
 
     .metric-card {
-      background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.1);
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
       border-radius: 12px;
       padding: 1.5rem;
       transition: all 0.3s ease;
@@ -122,16 +175,17 @@
     .chart-container {
       height: 300px;
       margin: 2rem 0;
-      background: rgba(255,255,255,0.02);
+      background: var(--card-bg);
       border-radius: 12px;
       padding: 1rem;
+      transition: all 0.3s ease;
     }
 
     .cta-section {
       text-align: center;
       margin: 4rem 0;
       padding: 3rem 0;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      border-top: 1px solid var(--border-color);
     }
 
     .cta-button {
@@ -149,11 +203,13 @@
 
     .cta-button:hover {
       background: var(--accent-blue);
+      color: white;
       transform: translateY(-2px);
     }
 
     .cta-primary {
       background: var(--accent-blue);
+      color: white;
     }
 
     .responsive-video-wrapper {
@@ -183,6 +239,11 @@
         width: 90vw;
         padding-bottom: calc(90vw * 0.5625);
       }
+      
+      .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+      }
     }
 
     .greek-letter {
@@ -199,6 +260,16 @@
   </style>
 </head>
 <body>
+  <!-- Theme Toggle Button -->
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <svg class="theme-toggle-icon" id="darkIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+    </svg>
+    <svg class="theme-toggle-icon" id="lightIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+    </svg>
+  </div>
+
   <div class="container">
     <header class="header">
       <h1 class="fund-title">Omniverse Fund</h1>
@@ -319,33 +390,103 @@
   </div>
 
   <script>
+    // Theme management
+    let currentTheme = 'dark';
+    let charts = {};
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      updateThemeIcons();
+      updateCharts();
+    }
+
+    function updateThemeIcons() {
+      const darkIcon = document.getElementById('darkIcon');
+      const lightIcon = document.getElementById('lightIcon');
+      
+      if (currentTheme === 'dark') {
+        darkIcon.classList.add('active');
+        lightIcon.classList.remove('active');
+      } else {
+        darkIcon.classList.remove('active');
+        lightIcon.classList.add('active');
+      }
+    }
+
+    function getThemeColors() {
+      const isDark = currentTheme === 'dark';
+      return {
+        textPrimary: isDark ? '#ffffff' : '#1e293b',
+        textSecondary: isDark ? '#9ca3af' : '#64748b',
+        accentBlue: isDark ? '#3b82f6' : '#2563eb',
+        accentCyan: isDark ? '#06b6d4' : '#0891b2',
+        gridColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+      };
+    }
+
+    function updateCharts() {
+      const colors = getThemeColors();
+      
+      Object.values(charts).forEach(chart => {
+        // Update text colors
+        chart.options.plugins.legend.labels.color = colors.textSecondary;
+        if (chart.options.plugins.title) {
+          chart.options.plugins.title.color = colors.textPrimary;
+        }
+        
+        // Update axis colors
+        if (chart.options.scales.x) {
+          chart.options.scales.x.ticks.color = colors.textSecondary;
+          chart.options.scales.x.grid.color = colors.gridColor;
+        }
+        if (chart.options.scales.y) {
+          chart.options.scales.y.ticks.color = colors.textSecondary;
+          chart.options.scales.y.grid.color = colors.gridColor;
+        }
+        if (chart.options.scales.r) {
+          chart.options.scales.r.ticks.color = colors.textSecondary;
+          chart.options.scales.r.grid.color = colors.gridColor;
+          chart.options.scales.r.pointLabels.color = colors.textSecondary;
+        }
+        
+        chart.update();
+      });
+    }
+
     // Chart configurations
-    const chartDefaults = {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          labels: {
-            color: '#9ca3af',
-            font: { family: 'Inter' }
+    function getChartDefaults() {
+      const colors = getThemeColors();
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: colors.textSecondary,
+              font: { family: 'Inter' }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: colors.textSecondary },
+            grid: { color: colors.gridColor }
+          },
+          y: {
+            ticks: { color: colors.textSecondary },
+            grid: { color: colors.gridColor }
           }
         }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#9ca3af' },
-          grid: { color: 'rgba(255,255,255,0.1)' }
-        },
-        y: {
-          ticks: { color: '#9ca3af' },
-          grid: { color: 'rgba(255,255,255,0.1)' }
-        }
-      }
-    };
+      };
+    }
+
+    // Initialize theme
+    updateThemeIcons();
 
     // Volatility Surface Chart
     const volatilityCtx = document.getElementById('volatilityChart').getContext('2d');
-    new Chart(volatilityCtx, {
+    charts.volatility = new Chart(volatilityCtx, {
       type: 'line',
       data: {
         labels: ['1D', '7D', '30D', '90D', '180D', '365D'],
@@ -366,13 +507,13 @@
         }]
       },
       options: {
-        ...chartDefaults,
+        ...getChartDefaults(),
         plugins: {
-          ...chartDefaults.plugins,
+          ...getChartDefaults().plugins,
           title: {
             display: true,
             text: 'Implied Volatility by Time Horizon (%)',
-            color: '#ffffff'
+            color: getThemeColors().textPrimary
           }
         }
       }
@@ -380,7 +521,7 @@
 
     // Strategy Allocation Chart
     const allocationCtx = document.getElementById('allocationChart').getContext('2d');
-    new Chart(allocationCtx, {
+    charts.allocation = new Chart(allocationCtx, {
       type: 'doughnut',
       data: {
         labels: ['Directional Trading', 'Market Making', 'Prediction Markets', 'Narrative Rotations'],
@@ -397,7 +538,7 @@
           legend: {
             position: 'bottom',
             labels: {
-              color: '#9ca3af',
+              color: getThemeColors().textSecondary,
               font: { family: 'Inter' },
               padding: 20
             }
@@ -405,7 +546,7 @@
           title: {
             display: true,
             text: 'Capital Allocation by Strategy (%)',
-            color: '#ffffff'
+            color: getThemeColors().textPrimary
           }
         }
       }
@@ -413,7 +554,7 @@
 
     // Risk Metrics Chart
     const riskCtx = document.getElementById('riskChart').getContext('2d');
-    new Chart(riskCtx, {
+    charts.risk = new Chart(riskCtx, {
       type: 'radar',
       data: {
         labels: ['Liquidity Risk', 'Market Risk', 'Execution Risk', 'Model Risk', 'Operational Risk'],
@@ -435,16 +576,16 @@
           title: {
             display: true,
             text: 'Risk Profile (1-5 Scale)',
-            color: '#ffffff'
+            color: getThemeColors().textPrimary
           }
         },
         scales: {
           r: {
             beginAtZero: true,
             max: 5,
-            ticks: { color: '#9ca3af' },
-            grid: { color: 'rgba(255,255,255,0.1)' },
-            pointLabels: { color: '#9ca3af' }
+            ticks: { color: getThemeColors().textSecondary },
+            grid: { color: getThemeColors().gridColor },
+            pointLabels: { color: getThemeColors().textSecondary }
           }
         }
       }
