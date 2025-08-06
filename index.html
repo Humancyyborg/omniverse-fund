@@ -1,596 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Omniverse Fund - Quantitative Lightpaper</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
+  
+  <title>Omniverse Fund</title>
+  <link rel="canonical" href="https://omniversefund.com">
+  
+  <meta name="omniverse-fund" content="digital-assets-attention-age">
+
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Omniverse Fund">
+  <meta name="description" content="Digital Assets Fund for the Attention Age. Private • Multi-Strategy • High-Frequency. Capturing alpha in meme assets, prediction markets, and emerging L2s.">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:site_name" content="Omniverse Fund">
+  <meta property="og:title" content="Omniverse Fund">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://omniversefund.com">
+  <meta property="og:description" content="Digital Assets Fund for the Attention Age. Private • Multi-Strategy • High-Frequency. Capturing alpha in meme assets, prediction markets, and emerging L2s.">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:url" content="https://omniversefund.com">
+  <meta property="twitter:title" content="Omniverse Fund">
+  <meta property="twitter:description" content="Digital Assets Fund for the Attention Age. Private • Multi-Strategy • High-Frequency. Capturing alpha in meme assets, prediction markets, and emerging L2s.">
+
+  <!-- Microdata -->
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "website",
+      "name": "Omniverse Fund",
+      "url": "https://omniversefund.com",
+      "description": "Digital Assets Fund for the Attention Age. Private • Multi-Strategy • High-Frequency. Capturing alpha in meme assets, prediction markets, and emerging L2s."
+    }
+  </script>
+
+  <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='90'%3E🌌%3C/text%3E%3C/svg%3E">
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
     :root {
-      /* Dark theme (default) */
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #1a1a2e;
-      --text-primary: #ffffff;
-      --text-secondary: #9ca3af;
-      --accent-blue: #3b82f6;
-      --accent-cyan: #06b6d4;
-      --border-color: rgba(255,255,255,0.1);
-      --card-bg: rgba(255,255,255,0.02);
-      --formula-bg: rgba(59, 130, 246, 0.05);
-      --formula-border: rgba(59, 130, 246, 0.2);
-    }
-
-    [data-theme="light"] {
-      /* Light theme */
-      --bg-primary: #ffffff;
-      --bg-secondary: #f8fafc;
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --accent-blue: #2563eb;
-      --accent-cyan: #0891b2;
-      --border-color: rgba(0,0,0,0.1);
-      --card-bg: rgba(0,0,0,0.02);
-      --formula-bg: rgba(37, 99, 235, 0.05);
-      --formula-border: rgba(37, 99, 235, 0.2);
+        --width: 720px;
+        --font-main: 'Roboto Mono', monospace;
+        --font-secondary: 'Roboto Mono', monospace;
+        --font-scale: .9em;
+        --background-color: #fff;
+        --heading-color: #232333;
+        --text-color: #232333;
+        --link-color: #232333;
+        --visited-color: #232333;
+        --main-color: #ff0000;
+        --code-background-color: #f2f2f2;
+        --code-color: #222;
+        --blockquote-color: #222;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      margin: 0;
-      line-height: 1.6;
-      transition: background-color 0.3s ease, color 0.3s ease;
+        font-family: var(--font-secondary);
+        font-size: var(--font-scale);
+        margin: auto;
+        padding: 20px;
+        max-width: var(--width);
+        text-align: left;
+        background-color: var(--background-color);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.5;
+        color: var(--text-color);
     }
 
-    .mono {
-      font-family: 'JetBrains Mono', monospace;
+    h1, h2, h3, h4, h5, h6 {
+        font-family: var(--font-main);
+        color: var(--heading-color);
     }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem;
+    a {
+        color: var(--link-color);
+        font-family: var(--font-main);
+        cursor: pointer;
+        text-decoration: none;
+        border-bottom: 3px solid #ff0000;
     }
 
-    .theme-toggle {
-      position: fixed;
-      top: 2rem;
-      right: 2rem;
-      z-index: 1000;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 50px;
-      padding: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
+    a:hover {
+        background-color: var(--main-color);
+        color: white;
+        text-decoration: none;
     }
 
-    .theme-toggle:hover {
-      border-color: var(--accent-blue);
-      transform: translateY(-2px);
+    header {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 3px dotted #232333;
     }
 
-    .theme-toggle-icon {
-      width: 20px;
-      height: 20px;
-      transition: all 0.3s ease;
-      color: var(--text-secondary);
+    nav a {
+        margin-right: 8px;
     }
 
-    .theme-toggle-icon.active {
-      color: var(--accent-blue);
+    strong, b {
+        color: var(--heading-color);
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 4rem;
-      padding: 3rem 0;
-      border-bottom: 1px solid var(--border-color);
+    main {
+        line-height: 1.6;
     }
 
-    .fund-title {
-      font-size: 2.5rem;
-      font-weight: 200;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
+    code {
+        font-family: monospace;
+        padding: 2px;
+        background-color: var(--code-background-color);
+        color: var(--code-color);
+        border-radius: 3px;
     }
 
-    .subtitle {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      font-weight: 300;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+    .formula {
+        background-color: var(--code-background-color);
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 3px;
+        font-family: var(--font-main);
+        overflow-x: auto;
     }
 
-    .section {
-      margin: 3rem auto;
-      padding: 2rem 0;
-      max-width: 700px;
+    footer {
+        margin-top: 40px;
+        border-top: 3px dotted #232333;
+        padding: 25px 0;
+        text-align: center;
     }
 
-    .section-title {
-      font-size: 1.2rem;
-      font-weight: 500;
-      margin-bottom: 1.5rem;
-      color: var(--accent-blue);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .title:hover {
+        text-decoration: none;
     }
 
-    .math-formula {
-      background: var(--formula-bg);
-      border: 1px solid var(--formula-border);
-      border-radius: 8px;
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      overflow-x: auto;
-      transition: all 0.3s ease;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin: 2rem 0;
-    }
-
-    .metric-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .metric-card:hover {
-      border-color: var(--accent-blue);
-      transform: translateY(-2px);
-    }
-
-    .metric-value {
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--accent-cyan);
-      margin-bottom: 0.5rem;
-    }
-
-    .metric-label {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .chart-container {
-      height: 300px;
-      margin: 2rem 0;
-      background: var(--card-bg);
-      border-radius: 12px;
-      padding: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .cta-section {
-      text-align: center;
-      margin: 4rem 0;
-      padding: 3rem 0;
-      border-top: 1px solid var(--border-color);
-    }
-
-    .cta-button {
-      display: inline-block;
-      padding: 0.75rem 1.5rem;
-      margin: 0 0.75rem;
-      border: 1px solid var(--accent-blue);
-      border-radius: 9999px;
-      color: var(--text-primary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      background: transparent;
-    }
-
-    .cta-button:hover {
-      background: var(--accent-blue);
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .cta-primary {
-      background: var(--accent-blue);
-      color: white;
-    }
-
-    .responsive-video-wrapper {
-      position: relative;
-      width: 60vw;
-      max-width: 100%;
-      margin: 3rem auto;
-      padding-bottom: calc(60vw * 0.5625); /* 16:9 ratio */
-      height: 0;
-      overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
-    }
-
-    .responsive-video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 12px;
-    }
-
-    @media (max-width: 768px) {
-      .responsive-video-wrapper {
-        width: 90vw;
-        padding-bottom: calc(90vw * 0.5625);
-      }
-      
-      .theme-toggle {
-        top: 1rem;
-        right: 1rem;
-      }
-    }
-
-    .greek-letter {
-      color: var(--accent-cyan);
-      font-weight: 600;
-    }
-
-    .theorem {
-      border-left: 3px solid var(--accent-blue);
-      padding-left: 1.5rem;
-      margin: 2rem 0;
-      font-style: italic;
+    .title h1 {
+        font-size: 1.5em;
     }
   </style>
 </head>
+
 <body>
-  <!-- Theme Toggle Button -->
-  <div class="theme-toggle" onclick="toggleTheme()">
-    <svg class="theme-toggle-icon" id="darkIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-    </svg>
-    <svg class="theme-toggle-icon" id="lightIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
-    </svg>
-  </div>
+  <header>
+    <a class="title" href="/">
+      <h1>Omniverse Fund</h1>
+    </a>
+    <nav>
+      <p><a href='https://x.com/omniversefund' target='_blank'>Twitter</a></p>
+    </nav>
+  </header>
 
-  <div class="container">
-    <header class="header">
-      <h1 class="fund-title">Omniverse Fund</h1>
-      <p class="subtitle">Digital Assets Fund for the Attention Age</p>
-      <p class="mono" style="color: var(--text-secondary); margin-top: 1rem;">
-        Private • Multi-Strategy • High-Frequency
-      </p>
-    </header>
+  <main>
+    <p>Digital Assets Fund for the Attention Age</p>
 
-   <!-- YouTube Video Embed -->
-<div class="responsive-video-wrapper">
-  <iframe
-    src="https://www.youtube.com/embed/sF76UUvZhcI?autoplay=1&mute=1&rel=0&modestbranding=1"
-    allowfullscreen
-    webkitallowfullscreen
-    mozallowfullscreen>
-  </iframe>
-</div>
+    <h2>Investment Thesis</h2>
+    
+    <p>Meme assets, prediction markets, and emerging L2s represent the fastest-growing and most inefficient segments of global crypto markets. Institutional traders avoid them due to size, speed, and reputational constraints — leaving <strong>α</strong> for agile, automated actors.</p>
 
+    <p><strong>Core Hypothesis:</strong> Market narratives now move faster than fundamentals. The new edge is being early to social signals with instant, scalable cross-chain execution.</p>
 
-    <section class="section">
-      <h2 class="section-title">Investment Thesis</h2>
-      <p>Meme assets, prediction markets, and emerging L2s represent the fastest-growing and most inefficient segments of global crypto markets. Institutional traders avoid them due to size, speed, and reputational constraints — leaving <span class="greek-letter">α</span> for agile, automated actors.</p>
-      
-      <div class="theorem">
-        <strong>Core Hypothesis:</strong> Market narratives now move faster than fundamentals. The new edge is being early to social signals with instant, scalable cross-chain execution.
-      </div>
-
-      <div class="math-formula">
-        Expected Return = <span class="greek-letter">α</span> + <span class="greek-letter">β</span>·Market + <span class="greek-letter">γ</span>·Narrative_Velocity + <span class="greek-letter">δ</span>·Execution_Speed
-        <br><br>
-        Where:<br>
-        • <span class="greek-letter">α</span> = Proprietary alpha from inefficient markets<br>
-        • <span class="greek-letter">β</span> = Market exposure (minimized via hedging)<br>
-        • <span class="greek-letter">γ</span> = Narrative momentum coefficient<br>
-        • <span class="greek-letter">δ</span> = Execution latency advantage
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Performance Metrics</h2>
-      <div class="metric-grid">
-        <div class="metric-card">
-          <div class="metric-value">847%</div>
-          <div class="metric-label">Meme Coin Volume Growth YoY</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value">12.3ms</div>
-          <div class="metric-label">Average Execution Latency</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value">4.2x</div>
-          <div class="metric-label">Sharpe Ratio Target</div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value">∞</div>
-          <div class="metric-label">Institutional Disadvantage</div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Volatility Surface Analysis</h2>
-      <div class="chart-container">
-        <canvas id="volatilityChart"></canvas>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Strategy Allocation</h2>
-      <div class="chart-container">
-        <canvas id="allocationChart"></canvas>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Execution Architecture</h2>
-      <div class="math-formula">
-        Signal Generation Pipeline:<br><br>
-        Social_Sentiment(t) → NLP_Processing → Narrative_Score<br>
-        ↓<br>
-        Risk_Management_Filter → Position_Sizing → Multi_Chain_Execution<br>
-        ↓<br>
-        Real_Time_Hedging → P&L_Attribution → Strategy_Optimization
-      </div>
-
-      <p>Our proprietary execution logic operates across Solana, Ethereum, Base, and Polymarket with sub-15ms latency. Real-time narrative tracking via X, Reddit, and Discord feeds into our positioning algorithms.</p>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Risk Framework</h2>
-      <div class="chart-container">
-        <canvas id="riskChart"></canvas>
-      </div>
-      
-      <div class="math-formula">
-        VaR(95%) = Portfolio_Value × <span class="greek-letter">σ</span> × Z_score × √t<br><br>
-        Maximum Drawdown Control: |DD_max| ≤ 15%<br>
-        Correlation Limit: ρ(strategy_i, strategy_j) ≤ 0.3
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 class="section-title">Multi-Layer Strategy</h2>
-      <p><strong>Directional Trading:</strong> Scalp/swing trades on meme assets with momentum-based entry signals.</p>
-      <p><strong>Prediction Markets:</strong> Event-driven alpha capture via Polymarket and derivatives.</p>
-      <p><strong>Market Making:</strong> Spread capture on new token launches with dynamic pricing models.</p>
-      <p><strong>Narrative Rotations:</strong> L2 sector rotations and pre-airdrop positioning strategies.</p>
-    </section>
-
-    <div class="cta-section">
-      <p style="margin-bottom: 2rem; font-size: 1.1rem;">
-        We are the algorithmic evolution of retail narrative cycles — faster, leaner, and positioned where institutions cannot go.
-      </p>
-      <a href="https://abalone-bladder-67d.notion.site/Whitepaper-23d536e9d0f080bfbc84fce94601ed05?source=copy_link" class="cta-button" target="_blank">White Paper</a>
-      <a href="https://meet.brevo.com/tigris/fund" class="cta-button cta-primary" target="_blank">Book a Call</a>
-      <a href="https://app.hel.io/pay/688a2c7129aa18badafe7c2a" class="cta-button" target="_blank">Subscribe (LP)</a>
+    <h3>Expected Return Model</h3>
+    
+    <div class="formula">
+      Expected Return = <strong>α</strong> + <strong>β</strong>·Market + <strong>γ</strong>·Narrative_Velocity + <strong>δ</strong>·Execution_Speed
     </div>
-  </div>
 
-  <script>
-    // Theme management
-    let currentTheme = 'dark';
-    let charts = {};
+    <p><strong>Where:</strong></p>
+    <ul>
+      <li><strong>α</strong> = Proprietary alpha from inefficient markets</li>
+      <li><strong>β</strong> = Market exposure (minimized via hedging)</li>
+      <li><strong>γ</strong> = Narrative momentum coefficient</li>
+      <li><strong>δ</strong> = Execution latency advantage</li>
+    </ul>
 
-    function toggleTheme() {
-      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', currentTheme);
-      updateThemeIcons();
-      updateCharts();
-    }
+  </main>
 
-    function updateThemeIcons() {
-      const darkIcon = document.getElementById('darkIcon');
-      const lightIcon = document.getElementById('lightIcon');
-      
-      if (currentTheme === 'dark') {
-        darkIcon.classList.add('active');
-        lightIcon.classList.remove('active');
-      } else {
-        darkIcon.classList.remove('active');
-        lightIcon.classList.add('active');
-      }
-    }
-
-    function getThemeColors() {
-      const isDark = currentTheme === 'dark';
-      return {
-        textPrimary: isDark ? '#ffffff' : '#1e293b',
-        textSecondary: isDark ? '#9ca3af' : '#64748b',
-        accentBlue: isDark ? '#3b82f6' : '#2563eb',
-        accentCyan: isDark ? '#06b6d4' : '#0891b2',
-        gridColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-      };
-    }
-
-    function updateCharts() {
-      const colors = getThemeColors();
-      
-      Object.values(charts).forEach(chart => {
-        // Update text colors
-        chart.options.plugins.legend.labels.color = colors.textSecondary;
-        if (chart.options.plugins.title) {
-          chart.options.plugins.title.color = colors.textPrimary;
-        }
-        
-        // Update axis colors
-        if (chart.options.scales.x) {
-          chart.options.scales.x.ticks.color = colors.textSecondary;
-          chart.options.scales.x.grid.color = colors.gridColor;
-        }
-        if (chart.options.scales.y) {
-          chart.options.scales.y.ticks.color = colors.textSecondary;
-          chart.options.scales.y.grid.color = colors.gridColor;
-        }
-        if (chart.options.scales.r) {
-          chart.options.scales.r.ticks.color = colors.textSecondary;
-          chart.options.scales.r.grid.color = colors.gridColor;
-          chart.options.scales.r.pointLabels.color = colors.textSecondary;
-        }
-        
-        chart.update();
-      });
-    }
-
-    // Chart configurations
-    function getChartDefaults() {
-      const colors = getThemeColors();
-      return {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: {
-              color: colors.textSecondary,
-              font: { family: 'Inter' }
-            }
-          }
-        },
-        scales: {
-          x: {
-            ticks: { color: colors.textSecondary },
-            grid: { color: colors.gridColor }
-          },
-          y: {
-            ticks: { color: colors.textSecondary },
-            grid: { color: colors.gridColor }
-          }
-        }
-      };
-    }
-
-    // Initialize theme
-    updateThemeIcons();
-
-    // Volatility Surface Chart
-    const volatilityCtx = document.getElementById('volatilityChart').getContext('2d');
-    charts.volatility = new Chart(volatilityCtx, {
-      type: 'line',
-      data: {
-        labels: ['1D', '7D', '30D', '90D', '180D', '365D'],
-        datasets: [{
-          label: 'Meme Coins',
-          data: [120, 89, 67, 45, 38, 32],
-          borderColor: '#3b82f6',
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
-          fill: true,
-          tension: 0.4
-        }, {
-          label: 'Traditional Crypto',
-          data: [45, 38, 32, 28, 25, 23],
-          borderColor: '#06b6d4',
-          backgroundColor: 'rgba(6, 182, 212, 0.1)',
-          fill: true,
-          tension: 0.4
-        }]
-      },
-      options: {
-        ...getChartDefaults(),
-        plugins: {
-          ...getChartDefaults().plugins,
-          title: {
-            display: true,
-            text: 'Implied Volatility by Time Horizon (%)',
-            color: getThemeColors().textPrimary
-          }
-        }
-      }
-    });
-
-    // Strategy Allocation Chart
-    const allocationCtx = document.getElementById('allocationChart').getContext('2d');
-    charts.allocation = new Chart(allocationCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Directional Trading', 'Market Making', 'Prediction Markets', 'Narrative Rotations'],
-        datasets: [{
-          data: [40, 25, 20, 15],
-          backgroundColor: ['#3b82f6', '#06b6d4', '#8b5cf6', '#10b981'],
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              color: getThemeColors().textSecondary,
-              font: { family: 'Inter' },
-              padding: 20
-            }
-          },
-          title: {
-            display: true,
-            text: 'Capital Allocation by Strategy (%)',
-            color: getThemeColors().textPrimary
-          }
-        }
-      }
-    });
-
-    // Risk Metrics Chart
-    const riskCtx = document.getElementById('riskChart').getContext('2d');
-    charts.risk = new Chart(riskCtx, {
-      type: 'radar',
-      data: {
-        labels: ['Liquidity Risk', 'Market Risk', 'Execution Risk', 'Model Risk', 'Operational Risk'],
-        datasets: [{
-          label: 'Risk Exposure',
-          data: [3, 4, 2, 3, 2],
-          borderColor: '#3b82f6',
-          backgroundColor: 'rgba(59, 130, 246, 0.2)',
-          pointBackgroundColor: '#3b82f6'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false
-          },
-          title: {
-            display: true,
-            text: 'Risk Profile (1-5 Scale)',
-            color: getThemeColors().textPrimary
-          }
-        },
-        scales: {
-          r: {
-            beginAtZero: true,
-            max: 5,
-            ticks: { color: getThemeColors().textSecondary },
-            grid: { color: getThemeColors().gridColor },
-            pointLabels: { color: getThemeColors().textSecondary }
-          }
-        }
-      }
-    });
-  </script>
+  <footer>
+    <span>Omniverse Fund © 2025</span>
+  </footer>
 </body>
 </html>
